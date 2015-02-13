@@ -1,0 +1,70 @@
+{
+  "className": "org.jenkinsci.plugins.jgiven.JGivenReportArchiverTest",
+  "scenarios": [
+    {
+      "className": "org.jenkinsci.plugins.jgiven.JGivenReportArchiverTest",
+      "testMethodName": "freestyle_project_is_built_successfully",
+      "description": "freestyle project is built successfully",
+      "tags": [],
+      "notImplementedYet": false,
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "a freestyle project",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a freestyle project"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 49984000
+            },
+            {
+              "name": "the project is built",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the project is built"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 164631000
+            },
+            {
+              "name": "the build is successful",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the build is successful"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 11432000
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "success": true,
+          "durationInNanos": 233579000
+        }
+      ],
+      "durationInNanos": 233579000,
+      "executionStatus": "SUCCESS"
+    }
+  ]
+}
