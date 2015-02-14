@@ -1,1 +1,1 @@
-# Jenkins jGiven-Plugin
+# Jenkins JGiven-Plugin
