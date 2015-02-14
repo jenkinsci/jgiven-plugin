@@ -14,12 +14,12 @@ public class ThenJenkins<SELF extends ThenJenkins<SELF>> extends JenkinsStage<SE
         return self();
     }
 
-    public SELF no_jGiven_report_is_generated() {
+    public SELF no_JGiven_report_is_generated() {
         assertThat(build.getActions(JGivenReportAction.class)).isEmpty();
         return self();
     }
 
-    public SELF a_jGiven_report_is_generated() {
+    public SELF a_JGiven_report_is_generated() {
         assertThat(build.getActions(JGivenReportAction.class)).isNotEmpty();
         return self();
     }

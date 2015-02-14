@@ -14,7 +14,7 @@ public class JGivenReportArchiverTest extends ScenarioTest<GivenJenkins<?>, When
 
 
     @Test
-    public void No_jGiven_results() throws Exception {
+    public void No_JGiven_results() throws Exception {
         given()
                 .a_freestyle_project()
                 .with().a_publish_jgiven_reports_recorder()
@@ -23,11 +23,11 @@ public class JGivenReportArchiverTest extends ScenarioTest<GivenJenkins<?>, When
         when().the_project_is_built();
 
         then().the_build_is_successful()
-                .and().no_jGiven_report_is_generated();
+                .and().no_JGiven_report_is_generated();
     }
 
     @Test
-    public void generate_jGiven_reports() throws Exception {
+    public void generate_JGiven_reports() throws Exception {
         given()
                 .a_freestyle_project()
                 .with().a_publish_jgiven_reports_recorder()
@@ -36,7 +36,7 @@ public class JGivenReportArchiverTest extends ScenarioTest<GivenJenkins<?>, When
         when().the_project_is_built();
 
         then().the_build_is_successful()
-                .and().a_jGiven_report_is_generated();
+                .and().a_JGiven_report_is_generated();
     }
 
 }
