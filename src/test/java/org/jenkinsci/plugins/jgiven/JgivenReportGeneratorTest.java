@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-public class JGivenReportArchiverTest extends ScenarioTest<GivenJenkins<?>, WhenJenkins<?>, ThenJenkins<?>> {
+public class JgivenReportGeneratorTest extends ScenarioTest<GivenJenkins<?>, WhenJenkins<?>, ThenJenkins<?>> {
 
     @ScenarioState
     @Rule

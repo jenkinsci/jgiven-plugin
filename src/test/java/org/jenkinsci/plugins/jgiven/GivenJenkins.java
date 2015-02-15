@@ -17,7 +17,7 @@ public class GivenJenkins<SELF extends GivenJenkins<SELF>> extends JenkinsStage<
     }
 
     public SELF a_publish_jgiven_reports_recorder() throws IOException {
-        project.getPublishersList().add(new JGivenReportArchiver(ImmutableList.<JGivenReportArchiver.ReportConfig>of(new JGivenReportArchiver.HtmlReportConfig())));
+        project.getPublishersList().add(new JgivenReportGenerator(ImmutableList.<JgivenReportGenerator.ReportConfig>of(new JgivenReportGenerator.HtmlReportConfig())));
         return self();
     }
 

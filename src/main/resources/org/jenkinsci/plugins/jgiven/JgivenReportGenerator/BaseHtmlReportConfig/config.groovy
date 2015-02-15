@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.jgiven.JGivenReportArchiver.BaseHtmlReportConfig
+package org.jenkinsci.plugins.jgiven.JgivenReportGenerator.BaseHtmlReportConfig
 
 import lib.FormTagLib
 

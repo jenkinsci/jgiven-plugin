@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
+public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
     public static final String REPORTS_DIR = "jgiven-reports";
     private List<ReportConfig> reportConfigs;
@@ -39,7 +39,7 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
     }
 
     @DataBoundConstructor
-    public JGivenReportArchiver(List<ReportConfig> reportConfigs) {
+    public JgivenReportGenerator(List<ReportConfig> reportConfigs) {
         this.reportConfigs = reportConfigs != null ? new ArrayList<ReportConfig>(reportConfigs) : Collections.<ReportConfig>emptyList();
     }
 
@@ -51,20 +51,25 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
 
     @Override
     public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) throws InterruptedException, IOException {
+        listener.getLogger().println(Messages.JgivenReportGenerator_generating_reports());
         File reportRootDir = reportRootDir(run);
         File jgivenJsons = new File(reportRootDir, "json");
         int numFiles = workspace.copyRecursiveTo(jgivenResults, new FilePath(jgivenJsons));
         if (numFiles > 0) {
+            listener.getLogger().println(Messages.JgivenReportGenerator_results_found(numFiles));
             for (ReportConfig reportConfig : reportConfigs) {
+                listener.getLogger().println(Messages.JgivenReportGenerator_generating_report(reportConfig.getReportName()));
                 generateReport(reportRootDir, jgivenJsons, reportConfig);
             }
-            run.addAction(new JGivenReportAction(run, reportConfigs));
+            run.addAction(new JgivenReportAction(run, reportConfigs));
+        } else {
+            listener.getLogger().println(Messages._JgivenReportGenerator_no_reports());
         }
     }
 
-    private void generateReport(File reportRootDir, File jGivenJsons, ReportConfig reportConfig) throws IOException, InterruptedException {
+    private void generateReport(File reportRootDir, File JgivenJsons, ReportConfig reportConfig) throws IOException, InterruptedException {
         try {
-            reportConfig.reportGenerator(jGivenJsons, reportRootDir).generate();
+            reportConfig.reportGenerator(JgivenJsons, reportRootDir).generate();
         } catch (IOException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -103,7 +108,7 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
 
         @Override
         public String getDisplayName() {
-            return Messages.JGivenReportArchiver_display_name();
+            return Messages.JgivenReportGenerator_display_name();
         }
 
         public FormValidation doCheckJgivenResults(
@@ -181,7 +186,7 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
                     return FormValidation.ok();
                 }
                 File file = new File(value);
-                return file.exists() ? FormValidation.ok() : FormValidation.error(Messages.JGivenReportArchiver_custom_css_file_does_not_exist());
+                return file.exists() ? FormValidation.ok() : FormValidation.error(Messages.JgivenReportGenerator_custom_css_file_does_not_exist());
             }
         }
     }
@@ -193,14 +198,14 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
         }
 
         public String getReportName() {
-            return Messages.JGivenReport_html_name();
+            return Messages.JgivenReport_html_name();
         }
 
         @Extension
         public static class DescriptorImpl extends BaseHtmlDescriptor {
             @Override
             public String getDisplayName() {
-                return Messages.JGivenReport_html_name();
+                return Messages.JgivenReport_html_name();
             }
         }
     }
@@ -212,14 +217,14 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
         }
 
         public String getReportName() {
-            return Messages.JGivenReport_html5_name();
+            return Messages.JgivenReport_html5_name();
         }
 
         @Extension
         public static class DescriptorImpl extends BaseHtmlDescriptor {
             @Override
             public String getDisplayName() {
-                return Messages.JGivenReport_html5_name();
+                return Messages.JgivenReport_html5_name();
             }
         }
     }
@@ -232,14 +237,14 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
 
         @Override
         public String getReportName() {
-            return Messages.JGivenReport_text_name();
+            return Messages.JgivenReport_text_name();
         }
 
         @Extension
         public static class DescriptorImpl extends Descriptor<ReportConfig> {
             @Override
             public String getDisplayName() {
-                return Messages.JGivenReport_text_name();
+                return Messages.JgivenReport_text_name();
             }
         }
     }
@@ -251,14 +256,14 @@ public class JGivenReportArchiver extends Recorder implements SimpleBuildStep {
         }
 
         public String getReportName() {
-            return Messages.JGivenReport_asciidoc_name();
+            return Messages.JgivenReport_asciidoc_name();
         }
 
         @Extension
         public static class DescriptorImpl extends Descriptor<ReportConfig> {
             @Override
             public String getDisplayName() {
-                return Messages.JGivenReport_asciidoc_name();
+                return Messages.JgivenReport_asciidoc_name();
             }
         }
     }

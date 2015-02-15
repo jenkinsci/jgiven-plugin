@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.jgiven.JGivenReportAction
+package org.jenkinsci.plugins.jgiven.JgivenReportAction
 
 import lib.JenkinsTagLib
 

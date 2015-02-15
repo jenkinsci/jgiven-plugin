@@ -15,18 +15,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.jenkinsci.plugins.jgiven.JGivenReportArchiver.REPORTS_DIR;
+import static org.jenkinsci.plugins.jgiven.JgivenReportGenerator.REPORTS_DIR;
 
-public class JGivenReportAction implements RunAction2, SimpleBuildStep.LastBuildAction {
+public class JgivenReportAction implements RunAction2, SimpleBuildStep.LastBuildAction {
 
     private transient Run<?, ?> run;
     private List<Report> reports;
 
-    public JGivenReportAction(Run<?, ?> run, List<JGivenReportArchiver.ReportConfig> reportConfigs) {
+    public JgivenReportAction(Run<?, ?> run, List<JgivenReportGenerator.ReportConfig> reportConfigs) {
         Preconditions.checkNotNull(reportConfigs);
         this.run = run;
         reports = new ArrayList<Report>();
-        for (JGivenReportArchiver.ReportConfig reportConfig : reportConfigs) {
+        for (JgivenReportGenerator.ReportConfig reportConfig : reportConfigs) {
             reports.add(new Report(reportConfig));
         }
     }
@@ -40,7 +40,7 @@ public class JGivenReportAction implements RunAction2, SimpleBuildStep.LastBuild
         private final String url;
         private final String name;
 
-        public Report(JGivenReportArchiver.ReportConfig reportConfig) {
+        public Report(JgivenReportGenerator.ReportConfig reportConfig) {
             this.url = reportConfig.getReportUrl();
             this.name = reportConfig.getReportName();
         }
@@ -78,7 +78,7 @@ public class JGivenReportAction implements RunAction2, SimpleBuildStep.LastBuild
     }
 
     public DirectoryBrowserSupport doReport() {
-        return new DirectoryBrowserSupport(run, new FilePath(new File(run.getRootDir(), REPORTS_DIR)), Messages.JGivenReportAction_jgiven_reports(), "clipboard.png", true);
+        return new DirectoryBrowserSupport(run, new FilePath(new File(run.getRootDir(), REPORTS_DIR)), Messages.JgivenReportAction_jgiven_reports(), "clipboard.png", true);
     }
 
     @Override
