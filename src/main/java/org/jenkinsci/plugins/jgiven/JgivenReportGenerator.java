@@ -40,7 +40,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
     @DataBoundConstructor
     public JgivenReportGenerator(List<ReportConfig> reportConfigs) {
-        this.reportConfigs = reportConfigs != null ? new ArrayList<ReportConfig>(reportConfigs) : Collections.<ReportConfig>emptyList();
+        this.reportConfigs = (reportConfigs != null  && !reportConfigs.isEmpty()) ? new ArrayList<ReportConfig>(reportConfigs) : Collections.<ReportConfig>singletonList(new Html5ReportConfig());
     }
 
     private String jgivenResults;

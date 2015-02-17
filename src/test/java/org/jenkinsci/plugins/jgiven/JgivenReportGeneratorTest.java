@@ -1,42 +1,17 @@
 package org.jenkinsci.plugins.jgiven;
 
-import com.tngtech.jgiven.annotation.ScenarioState;
-import com.tngtech.jgiven.junit.ScenarioTest;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
-public class JgivenReportGeneratorTest extends ScenarioTest<GivenJenkins<?>, WhenJenkins<?>, ThenJenkins<?>> {
+import java.util.ArrayList;
 
-    @ScenarioState
-    @Rule
-    public JenkinsRule jenkinsRule = new JenkinsRule();
+import static org.assertj.core.api.Assertions.assertThat;
 
-
+public class JgivenReportGeneratorTest {
     @Test
-    public void No_JGiven_results() throws Exception {
-        given()
-                .a_freestyle_project()
-                .with().a_publish_jgiven_reports_recorder()
-                .and().without_jgiven_results();
+    public void when_no_report_is_configured_then_html5_is_added_by_default() {
+        JgivenReportGenerator jgivenReportGenerator = new JgivenReportGenerator(new ArrayList<JgivenReportGenerator.ReportConfig>());
 
-        when().the_project_is_built();
-
-        then().the_build_is_successful()
-                .and().no_JGiven_report_is_generated();
+        assertThat(jgivenReportGenerator.getReportConfigs()).hasSize(1);
+        assertThat(jgivenReportGenerator.getReportConfigs().iterator().next()).isInstanceOf(JgivenReportGenerator.Html5ReportConfig.class);
     }
-
-    @Test
-    public void generate_JGiven_reports() throws Exception {
-        given()
-                .a_freestyle_project()
-                .with().a_publish_jgiven_reports_recorder()
-                .and().with_jgiven_results();
-
-        when().the_project_is_built();
-
-        then().the_build_is_successful()
-                .and().a_JGiven_report_is_generated();
-    }
-
 }
