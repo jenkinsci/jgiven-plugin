@@ -1,0 +1,219 @@
+{
+  "className": "org.jenkinsci.plugins.jgiven.JgivenReportGeneratorTest",
+  "scenarios": [
+    {
+      "className": "org.jenkinsci.plugins.jgiven.JgivenReportGeneratorTest",
+      "testMethodName": "generate_JGiven_reports",
+      "description": "generate JGiven reports",
+      "tags": [],
+      "notImplementedYet": false,
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "a freestyle project",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a freestyle project"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 2013000
+            },
+            {
+              "name": "a publish jgiven reports recorder",
+              "words": [
+                {
+                  "value": "with",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a publish jgiven reports recorder"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 109000
+            },
+            {
+              "name": "with jgiven results",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "with jgiven results"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 19727000
+            },
+            {
+              "name": "the project is built",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the project is built"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 250103000
+            },
+            {
+              "name": "the build is successful",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the build is successful"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 108000
+            },
+            {
+              "name": "a JGiven report is generated",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a JGiven report is generated"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 14391000
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "success": true,
+          "durationInNanos": 356806000
+        }
+      ],
+      "durationInNanos": 356806000,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.jenkinsci.plugins.jgiven.JgivenReportGeneratorTest",
+      "testMethodName": "No_JGiven_results",
+      "description": "No JGiven results",
+      "tags": [],
+      "notImplementedYet": false,
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "a freestyle project",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a freestyle project"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 12000
+            },
+            {
+              "name": "a publish jgiven reports recorder",
+              "words": [
+                {
+                  "value": "with",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a publish jgiven reports recorder"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 22000
+            },
+            {
+              "name": "without jgiven results",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "without jgiven results"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 213000
+            },
+            {
+              "name": "the project is built",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the project is built"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 62801000
+            },
+            {
+              "name": "the build is successful",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the build is successful"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 8000
+            },
+            {
+              "name": "no JGiven report is generated",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "no JGiven report is generated"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 108000
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "success": true,
+          "durationInNanos": 72899000
+        }
+      ],
+      "durationInNanos": 72899000,
+      "executionStatus": "SUCCESS"
+    }
+  ]
+}

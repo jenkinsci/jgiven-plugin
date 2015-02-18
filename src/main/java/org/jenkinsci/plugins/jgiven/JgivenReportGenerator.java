@@ -95,7 +95,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
     }
 
     private static String jgivenResultsFromString(String jgivenResults) {
-        return StringUtils.isBlank(jgivenResults) ? "**/*.json" : jgivenResults;
+        return StringUtils.isBlank(jgivenResults) ? "**/json/*.json" : jgivenResults;
     }
 
     @Extension

@@ -17,7 +17,9 @@ public class GivenJenkins<SELF extends GivenJenkins<SELF>> extends JenkinsStage<
     }
 
     public SELF a_publish_jgiven_reports_recorder() throws IOException {
-        project.getPublishersList().add(new JgivenReportGenerator(ImmutableList.<JgivenReportGenerator.ReportConfig>of(new JgivenReportGenerator.HtmlReportConfig())));
+        JgivenReportGenerator reportGenerator = new JgivenReportGenerator(ImmutableList.<JgivenReportGenerator.ReportConfig>of(new JgivenReportGenerator.HtmlReportConfig()));
+        reportGenerator.setJgivenResults("**/*.json");
+        project.getPublishersList().add(reportGenerator);
         return self();
     }
 
@@ -26,7 +28,7 @@ public class GivenJenkins<SELF extends GivenJenkins<SELF>> extends JenkinsStage<
     }
 
     public SELF with_jgiven_results() throws IOException {
-        project.getBuildersList().add(new JgivenResultBuilder(Resources.toString(Resources.getResource(this.getClass(), "/org.jenkinsci.plugins.jgiven.JGivenReportArchiverTest.json"), Charsets.UTF_8)));
+        project.getBuildersList().add(new JgivenResultBuilder(Resources.toString(Resources.getResource(this.getClass(), "/org.jenkinsci.plugins.jgiven.JgivenReportGeneratorTest.json"), Charsets.UTF_8)));
         return self();
     }
 
