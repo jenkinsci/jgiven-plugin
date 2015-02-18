@@ -33,6 +33,11 @@
             <email>stefan.wolf@tngtech.com</email>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git:git://github.com/jenkinsci/jgiven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/jgiven-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/jgiven-plugin</url>
+    </scm>
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
