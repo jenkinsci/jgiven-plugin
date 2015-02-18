@@ -13,7 +13,7 @@
     </parent>
 
     <artifactId>jgiven-plugin</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
     <name>JGiven Jenkins Plugin</name>
@@ -36,7 +36,7 @@
         <connection>scm:git:git://github.com/jenkinsci/jgiven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/jgiven-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/jgiven-plugin</url>
-      <tag>jgiven-plugin-0.1</tag>
+      <tag>HEAD</tag>
   </scm>
     <repositories>
         <repository>
