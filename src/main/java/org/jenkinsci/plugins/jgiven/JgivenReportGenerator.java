@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
@@ -133,7 +134,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         }
 
         public String getReportDirectory() {
-            return getFormat().name().toLowerCase();
+            return getFormat().name().toLowerCase(Locale.ENGLISH);
         }
 
         public String getReportUrl() {
