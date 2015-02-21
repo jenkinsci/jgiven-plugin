@@ -12,7 +12,7 @@
         <relativePath />
     </parent>
 
-    <artifactId>jgiven-plugin</artifactId>
+    <artifactId>jgiven</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
