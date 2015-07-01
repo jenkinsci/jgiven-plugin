@@ -157,6 +157,12 @@
             <version>${jgiven.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>job-dsl</artifactId>
+            <version>1.35</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>com.tngtech.jgiven</groupId>
             <artifactId>jgiven-junit</artifactId>
             <version>${jgiven.version}</version>
