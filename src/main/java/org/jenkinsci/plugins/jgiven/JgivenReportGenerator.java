@@ -4,11 +4,8 @@ import com.tngtech.jgiven.report.ReportGenerator;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.AbstractProject;
-import hudson.model.Descriptor;
-import hudson.model.Run;
-import hudson.model.TaskListener;
+import hudson.init.Initializer;
+import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
@@ -29,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static hudson.init.InitMilestone.PLUGINS_STARTED;
+
 public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
     public static final String REPORTS_DIR = "jgiven-reports";
@@ -41,7 +40,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
     @DataBoundConstructor
     public JgivenReportGenerator(List<ReportConfig> reportConfigs) {
-        this.reportConfigs = (reportConfigs != null  && !reportConfigs.isEmpty()) ? new ArrayList<ReportConfig>(reportConfigs) : Collections.<ReportConfig>singletonList(new Html5ReportConfig());
+        this.reportConfigs = (reportConfigs != null && !reportConfigs.isEmpty()) ? new ArrayList<ReportConfig>(reportConfigs) : Collections.<ReportConfig>singletonList(new HtmlReportConfig());
     }
 
     private String jgivenResults;
@@ -152,16 +151,21 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         }
     }
 
-    public static abstract class BaseHtmlReportConfig extends ReportConfig {
-        BaseHtmlReportConfig(ReportGenerator.Format format) {
-            super(format);
+    public static class HtmlReportConfig extends ReportConfig {
+        private String customCssFile;
+
+        @DataBoundConstructor
+        public HtmlReportConfig() {
+            super(ReportGenerator.Format.HTML);
+        }
+
+        public String getReportName() {
+            return Messages.JgivenReport_html_name();
         }
 
         public String getReportUrl() {
             return String.format("%s/index.html", getReportDirectory());
         }
-
-        private String customCssFile;
 
         public String getCustomCssFile() {
             return customCssFile;
@@ -181,51 +185,19 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
             return reportGenerator;
         }
 
-        public abstract static class BaseHtmlDescriptor extends Descriptor<ReportConfig> {
+        @Extension
+        public static class DescriptorImpl extends Descriptor<ReportConfig> {
+            @Override
+            public String getDisplayName() {
+                return Messages.JgivenReport_html_name();
+            }
+
             public FormValidation doCheckCustomCssFile(@QueryParameter String value) {
                 if (StringUtils.isEmpty(value)) {
                     return FormValidation.ok();
                 }
                 File file = new File(value);
                 return file.exists() ? FormValidation.ok() : FormValidation.error(Messages.JgivenReportGenerator_custom_css_file_does_not_exist());
-            }
-        }
-    }
-
-    public static class HtmlReportConfig extends BaseHtmlReportConfig {
-        @DataBoundConstructor
-        public HtmlReportConfig() {
-            super(ReportGenerator.Format.HTML);
-        }
-
-        public String getReportName() {
-            return Messages.JgivenReport_html_name();
-        }
-
-        @Extension
-        public static class DescriptorImpl extends BaseHtmlDescriptor {
-            @Override
-            public String getDisplayName() {
-                return Messages.JgivenReport_html_name();
-            }
-        }
-    }
-
-    public static class Html5ReportConfig extends BaseHtmlReportConfig {
-        @DataBoundConstructor
-        public Html5ReportConfig() {
-            super(ReportGenerator.Format.HTML5);
-        }
-
-        public String getReportName() {
-            return Messages.JgivenReport_html5_name();
-        }
-
-        @Extension
-        public static class DescriptorImpl extends BaseHtmlDescriptor {
-            @Override
-            public String getDisplayName() {
-                return Messages.JgivenReport_html5_name();
             }
         }
     }
@@ -267,5 +239,10 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
                 return Messages.JgivenReport_asciidoc_name();
             }
         }
+    }
+
+    @Initializer(before = PLUGINS_STARTED)
+    public static void addAliases() {
+        Items.XSTREAM2.addCompatibilityAlias("org.jenkinsci.plugins.jgiven.JgivenReportGenerator$Html5ReportConfig", HtmlReportConfig.class);
     }
 }

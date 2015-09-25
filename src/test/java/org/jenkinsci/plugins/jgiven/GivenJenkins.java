@@ -23,7 +23,7 @@ public class GivenJenkins<SELF extends GivenJenkins<SELF>> extends JenkinsStage<
         return self();
     }
 
-    public SELF without_jgiven_results() throws  Exception {
+    public SELF without_jgiven_results() throws Exception {
         return self();
     }
 

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <jgiven.version>0.7.0</jgiven.version>
+        <jgiven.version>0.8.2</jgiven.version>
     </properties>
 
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
         <version>1.580.1</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <artifactId>jgiven</artifactId>
@@ -36,8 +37,8 @@
         <connection>scm:git:git://github.com/jenkinsci/jgiven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/jgiven-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/jgiven-plugin</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
@@ -157,6 +158,12 @@
             <version>${jgiven.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>job-dsl</artifactId>
+            <version>1.37</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>com.tngtech.jgiven</groupId>
             <artifactId>jgiven-junit</artifactId>
             <version>${jgiven.version}</version>
@@ -168,6 +175,11 @@
             <version>1.5.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jvnet.hudson</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.7-jenkins-1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-
 </project>
