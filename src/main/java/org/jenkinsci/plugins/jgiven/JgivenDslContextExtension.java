@@ -5,7 +5,7 @@ import javaposse.jobdsl.dsl.Context;
 import javaposse.jobdsl.dsl.helpers.publisher.PublisherContext;
 import javaposse.jobdsl.plugin.ContextExtensionPoint;
 import javaposse.jobdsl.plugin.DslExtensionMethod;
-import org.jenkinsci.plugins.jgiven.JgivenReportGenerator.Html5ReportConfig;
+import org.jenkinsci.plugins.jgiven.JgivenReportGenerator.HtmlReportConfig;
 import org.jenkinsci.plugins.jgiven.JgivenReportGenerator.ReportConfig;
 
 import java.util.ArrayList;
@@ -26,14 +26,14 @@ public class JgivenDslContextExtension extends ContextExtensionPoint {
         private List<ReportConfig> reportConfigs = new ArrayList<ReportConfig>();
         private String resultFiles = "";
 
-        public void html5Report() {
-            reportConfigs.add(new Html5ReportConfig());
+        public void html() {
+            reportConfigs.add(new HtmlReportConfig());
         }
 
-        public void html5Report(Runnable closure) {
+        public void html(Runnable closure) {
             HtmlReportContext context = new HtmlReportContext();
             executeInContext(closure, context);
-            Html5ReportConfig reportConfig = new Html5ReportConfig();
+            HtmlReportConfig reportConfig = new HtmlReportConfig();
             reportConfig.setCustomCssFile(context.customCss);
             reportConfigs.add(reportConfig);
         }

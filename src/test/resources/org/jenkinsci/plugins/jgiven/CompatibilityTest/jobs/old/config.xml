@@ -1,0 +1,26 @@
+<project>
+    <actions></actions>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties></properties>
+    <scm class='hudson.scm.NullSCM'></scm>
+    <canRoam>true</canRoam>
+    <disabled>false</disabled>
+    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+    <triggers class='vector'></triggers>
+    <concurrentBuild>false</concurrentBuild>
+    <builders></builders>
+    <publishers>
+        <org.jenkinsci.plugins.jgiven.JgivenReportGenerator plugin='jgiven@0.2.0-SNAPSHOT'>
+            <reportConfigs>
+                <org.jenkinsci.plugins.jgiven.JgivenReportGenerator_-Html5ReportConfig>
+                    <format>HTML5</format>
+                    <customCssFile>some.css</customCssFile>
+                </org.jenkinsci.plugins.jgiven.JgivenReportGenerator_-Html5ReportConfig>
+            </reportConfigs>
+            <jgivenResults>**/*.some.json</jgivenResults>
+        </org.jenkinsci.plugins.jgiven.JgivenReportGenerator>
+    </publishers>
+    <buildWrappers></buildWrappers>
+</project>
