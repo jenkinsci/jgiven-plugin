@@ -153,6 +153,8 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
     public static class HtmlReportConfig extends ReportConfig {
         private String customCssFile;
+        private String customJsFile;
+        private String title;
 
         @DataBoundConstructor
         public HtmlReportConfig() {
@@ -176,11 +178,35 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
             this.customCssFile = customCssFile;
         }
 
+        public String getCustomJsFile() {
+            return customJsFile;
+        }
+
+        @DataBoundSetter
+        public void setCustomJsFile(String customJsFile) {
+            this.customJsFile = customJsFile;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        @DataBoundSetter
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
         @Override
         public ReportGenerator reportGenerator(File sourceDir, File reportRootDir) {
             ReportGenerator reportGenerator = super.reportGenerator(sourceDir, reportRootDir);
             if (StringUtils.isNotBlank(customCssFile)) {
-                reportGenerator.setCustomCssFile(new File(customCssFile));
+                reportGenerator.getConfig().setCustomCssFile(new File(customCssFile));
+            }
+            if (StringUtils.isNotBlank(customJsFile)) {
+                reportGenerator.getConfig().setCustomJsFile(new File(customJsFile));
+            }
+            if (StringUtils.isNotBlank(title)) {
+                reportGenerator.getConfig().setTitle(title);
             }
             return reportGenerator;
         }
@@ -193,11 +219,19 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
             }
 
             public FormValidation doCheckCustomCssFile(@QueryParameter String value) {
+                return validateFileExists(value);
+            }
+
+            public FormValidation doCheckCustomJsFile(@QueryParameter String value) {
+                return validateFileExists(value);
+            }
+
+            private FormValidation validateFileExists(@QueryParameter String value) {
                 if (StringUtils.isEmpty(value)) {
                     return FormValidation.ok();
                 }
                 File file = new File(value);
-                return file.exists() ? FormValidation.ok() : FormValidation.error(Messages.JgivenReportGenerator_custom_css_file_does_not_exist());
+                return file.exists() ? FormValidation.ok() : FormValidation.error(Messages.JgivenReportGenerator_custom_file_does_not_exist());
             }
         }
     }

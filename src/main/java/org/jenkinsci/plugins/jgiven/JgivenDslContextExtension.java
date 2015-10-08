@@ -35,6 +35,8 @@ public class JgivenDslContextExtension extends ContextExtensionPoint {
             executeInContext(closure, context);
             HtmlReportConfig reportConfig = new HtmlReportConfig();
             reportConfig.setCustomCssFile(context.customCss);
+            reportConfig.setCustomJsFile(context.customJs);
+            reportConfig.setTitle(context.title);
             reportConfigs.add(reportConfig);
         }
 
@@ -45,9 +47,17 @@ public class JgivenDslContextExtension extends ContextExtensionPoint {
 
     public static class HtmlReportContext implements Context {
         private String customCss;
+        private String customJs;
+        private String title;
 
         public void customCss(String customCss) {
             this.customCss = customCss;
+        }
+        public void customJs(String customJs) {
+            this.customJs = customJs;
+        }
+        public void title(String title) {
+            this.title = title;
         }
     }
 }
