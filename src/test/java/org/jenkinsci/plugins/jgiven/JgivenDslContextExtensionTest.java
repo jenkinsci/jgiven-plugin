@@ -11,7 +11,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JgivenDslContextTest {
+public class JgivenDslContextExtensionTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 

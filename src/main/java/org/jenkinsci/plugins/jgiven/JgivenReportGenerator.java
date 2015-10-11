@@ -1,6 +1,7 @@
 package org.jenkinsci.plugins.jgiven;
 
 import com.tngtech.jgiven.report.ReportGenerator;
+import groovy.lang.Closure;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
@@ -41,6 +42,19 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
     @DataBoundConstructor
     public JgivenReportGenerator(List<ReportConfig> reportConfigs) {
         this.reportConfigs = (reportConfigs != null && !reportConfigs.isEmpty()) ? new ArrayList<ReportConfig>(reportConfigs) : Collections.<ReportConfig>singletonList(new HtmlReportConfig());
+    }
+
+    public JgivenReportGenerator(Closure<?> configClosure) {
+        JgivenDslContext context = new JgivenDslContext();
+        executeInContext(configClosure, context);
+        setJgivenResults(context.resultFiles);
+        reportConfigs = context.reportConfigs;
+    }
+
+    private static void executeInContext(Closure<?> configClosure, Object context) {
+        configClosure.setDelegate(context);
+        configClosure.setResolveStrategy(Closure.DELEGATE_FIRST);
+        configClosure.call();
     }
 
     private String jgivenResults;
@@ -159,6 +173,15 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         @DataBoundConstructor
         public HtmlReportConfig() {
             super(ReportGenerator.Format.HTML);
+        }
+
+        public HtmlReportConfig(Closure<?> closure) {
+            this();
+            HtmlReportContext context = new HtmlReportContext();
+            executeInContext(closure, context);
+            this.setCustomCssFile(context.customCss);
+            this.setCustomJsFile(context.customJs);
+            this.setTitle(context.title);
         }
 
         public String getReportName() {
