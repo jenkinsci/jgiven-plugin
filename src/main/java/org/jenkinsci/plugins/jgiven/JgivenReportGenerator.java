@@ -30,7 +30,6 @@ import java.util.Locale;
 import static hudson.init.InitMilestone.PLUGINS_STARTED;
 
 public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
-
     public static final String REPORTS_DIR = "jgiven-reports";
     private List<ReportConfig> reportConfigs;
 
@@ -73,7 +72,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
             listener.getLogger().println(Messages.JgivenReportGenerator_results_found(numFiles));
             for (ReportConfig reportConfig : reportConfigs) {
                 listener.getLogger().println(Messages.JgivenReportGenerator_generating_report(reportConfig.getReportName()));
-                generateReport(reportRootDir, jgivenJsons, reportConfig);
+                generateReport(reportRootDir, jgivenJsons, reportConfig, workspace);
             }
             run.addAction(new JgivenReportAction(run, reportConfigs));
         } else {
@@ -81,9 +80,9 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         }
     }
 
-    private void generateReport(File reportRootDir, File JgivenJsons, ReportConfig reportConfig) throws IOException, InterruptedException {
+    private void generateReport(File reportRootDir, File JgivenJsons, ReportConfig reportConfig, FilePath workspace) throws IOException, InterruptedException {
         try {
-            reportConfig.reportGenerator(JgivenJsons, reportRootDir).generate();
+            reportConfig.reportGenerator(JgivenJsons, reportRootDir, workspace).generate();
         } catch (IOException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -156,7 +155,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
         abstract String getReportName();
 
-        public ReportGenerator reportGenerator(File sourceDir, File reportRootDir) {
+        public ReportGenerator reportGenerator(File sourceDir, File reportRootDir, FilePath workspace) throws IOException, InterruptedException {
             ReportGenerator reportGenerator = new ReportGenerator();
             reportGenerator.setSourceDirectory(sourceDir);
             reportGenerator.setFormat(getFormat());
@@ -220,18 +219,24 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         }
 
         @Override
-        public ReportGenerator reportGenerator(File sourceDir, File reportRootDir) {
-            ReportGenerator reportGenerator = super.reportGenerator(sourceDir, reportRootDir);
+        public ReportGenerator reportGenerator(File sourceDir, File reportRootDir, FilePath workspace) throws IOException, InterruptedException {
+            ReportGenerator reportGenerator = super.reportGenerator(sourceDir, reportRootDir, workspace);
             if (StringUtils.isNotBlank(customCssFile)) {
-                reportGenerator.getConfig().setCustomCssFile(new File(customCssFile));
+                reportGenerator.getConfig().setCustomCssFile(copyFileToMaster(workspace, customCssFile));
             }
             if (StringUtils.isNotBlank(customJsFile)) {
-                reportGenerator.getConfig().setCustomJsFile(new File(customJsFile));
+                reportGenerator.getConfig().setCustomJsFile(copyFileToMaster(workspace, customJsFile));
             }
             if (StringUtils.isNotBlank(title)) {
                 reportGenerator.getConfig().setTitle(title);
             }
             return reportGenerator;
+        }
+
+        private File copyFileToMaster(FilePath workspace, String file) throws IOException, InterruptedException {
+            File tmpFile = File.createTempFile("file", null);
+            workspace.child(file).copyTo(new FilePath(tmpFile));
+            return tmpFile;
         }
 
         @Extension
