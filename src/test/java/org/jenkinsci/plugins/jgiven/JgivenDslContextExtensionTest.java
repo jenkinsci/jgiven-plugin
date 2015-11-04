@@ -20,7 +20,7 @@ public class JgivenDslContextExtensionTest {
         FreeStyleProject seedJob = j.createFreeStyleProject();
 
         seedJob.getBuildersList().add(new ExecuteDslScripts(new ExecuteDslScripts.ScriptLocation(Boolean.TRUE.toString(), null,
-                "freeStyleJob('test-job') { publishers { jgivenReports {  results 'some.json'; html { customCss '/some/css' } }  } }"), false, RemovedJobAction.DELETE));
+                "freeStyleJob('test-job') { publishers { jgivenReports {  results 'some.json'; excludeEmptyScenarios(); html { customCss '/some/css' } }  } }"), false, RemovedJobAction.DELETE));
 
         j.buildAndAssertSuccess(seedJob);
 
@@ -28,6 +28,7 @@ public class JgivenDslContextExtensionTest {
         JgivenReportGenerator jgivenReportGenerator = createdJob.getPublishersList().get(JgivenReportGenerator.class);
 
         assertThat(jgivenReportGenerator.getJgivenResults()).isEqualTo("some.json");
+        assertThat(jgivenReportGenerator.isExcludeEmptyScenarios()).isTrue();
 
         JgivenReportGenerator.HtmlReportConfig reportConfig = (JgivenReportGenerator.HtmlReportConfig) Iterables.getOnlyElement(jgivenReportGenerator.getReportConfigs());
         assertThat(reportConfig.getFormat()).isEqualTo(ReportGenerator.Format.HTML);
