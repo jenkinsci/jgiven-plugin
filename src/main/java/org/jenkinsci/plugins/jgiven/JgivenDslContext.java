@@ -9,6 +9,7 @@ import java.util.List;
 public class JgivenDslContext implements Context {
     List<JgivenReportGenerator.ReportConfig> reportConfigs = new ArrayList<JgivenReportGenerator.ReportConfig>();
     String resultFiles = "";
+    boolean excludeEmptyScenarios;
 
     public void html() {
         reportConfigs.add(new JgivenReportGenerator.HtmlReportConfig());
@@ -21,5 +22,13 @@ public class JgivenDslContext implements Context {
 
     public void results(String glob) {
         resultFiles = glob;
+    }
+
+    public void excludeEmptyScenarios(boolean excludeEmptyScenarios) {
+        this.excludeEmptyScenarios = excludeEmptyScenarios;
+    }
+
+    public void excludeEmptyScenarios() {
+        excludeEmptyScenarios(true);
     }
 }
