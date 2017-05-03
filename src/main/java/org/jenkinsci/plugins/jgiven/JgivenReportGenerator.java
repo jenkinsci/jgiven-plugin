@@ -1,6 +1,14 @@
 package org.jenkinsci.plugins.jgiven;
 
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.ReportGenerator;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
+import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+import com.tngtech.jgiven.report.html5.Html5ReportGenerator;
+import com.tngtech.jgiven.report.text.PlainTextReportConfig;
+import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import groovy.lang.Closure;
 import hudson.Extension;
 import hudson.FilePath;
@@ -84,11 +92,12 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
     private void generateReport(File reportRootDir, File JgivenJsons, ReportConfig reportConfig, FilePath workspace) throws IOException, InterruptedException {
         try {
-            ReportGenerator reportGenerator = new ReportGenerator();
+            AbstractReportGenerator reportGenerator = createReportGenerator(reportConfig.getFormat());
             configureReportGenerator(reportRootDir, JgivenJsons, reportConfig, reportGenerator, workspace);
-            reportGenerator.generate();
+            reportGenerator.generateReport();
         } catch (IOException e) {
             throw e;
+
         } catch (RuntimeException e) {
             throw e;
         } catch (InterruptedException e) {
@@ -98,14 +107,27 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         }
     }
 
-    void configureReportGenerator(File reportRootDir, File sourceDir, ReportConfig reportConfig, ReportGenerator reportGenerator, FilePath workspace) throws IOException, InterruptedException {
-        reportGenerator.setSourceDirectory(sourceDir);
-        reportGenerator.setFormat(reportConfig.getFormat());
-        reportGenerator.setTargetDirectory(new File(reportRootDir, reportConfig.getReportDirectory()));
+    private AbstractReportGenerator createReportGenerator(ReportGenerator.Format format) {
+        switch (format) {
+            case TEXT:
+                return new PlainTextReportGenerator();
+            case ASCIIDOC:
+                return new AsciiDocReportGenerator();
+            case HTML:
+            case HTML5:
+                return new Html5ReportGenerator();
+            default:
+                throw new IllegalArgumentException("Unsupported format "+format);
+        }
+    }
 
-        ReportGenerator.Config jgivenConfig = reportConfig.getJgivenConfig(workspace);
+    void configureReportGenerator(File reportRootDir, File sourceDir, ReportConfig reportConfig, AbstractReportGenerator generator, FilePath workspace) throws IOException, InterruptedException {
+        AbstractReportConfig jgivenConfig = reportConfig.getJgivenConfig(workspace);
+        jgivenConfig.setSourceDir(sourceDir);
+        jgivenConfig.setTargetDir(new File(reportRootDir, reportConfig.getReportDirectory()));
+
         jgivenConfig.setExcludeEmptyScenarios(excludeEmptyScenarios);
-        reportGenerator.setConfig(jgivenConfig);
+        generator.setConfig(jgivenConfig);
     }
 
     private File reportRootDir(Run<?, ?> run) {
@@ -178,9 +200,7 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
 
         abstract String getReportName();
 
-        public ReportGenerator.Config getJgivenConfig(FilePath workspace) throws IOException, InterruptedException {
-            return new ReportGenerator.Config();
-        }
+        public abstract AbstractReportConfig getJgivenConfig(FilePath workspace) throws IOException, InterruptedException;
     }
 
     public static class HtmlReportConfig extends ReportConfig {
@@ -238,13 +258,13 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
         }
 
         @Override
-        public ReportGenerator.Config getJgivenConfig(FilePath workspace) throws IOException, InterruptedException {
-            ReportGenerator.Config jgivenConfig = super.getJgivenConfig(workspace);
+        public AbstractReportConfig getJgivenConfig(FilePath workspace) throws IOException, InterruptedException {
+            Html5ReportConfig jgivenConfig = new Html5ReportConfig();
             if (StringUtils.isNotBlank(customCssFile)) {
-                jgivenConfig.setCustomCssFile(copyFileToMaster(workspace, customCssFile));
+                jgivenConfig.setCustomCss(copyFileToMaster(workspace, customCssFile));
             }
             if (StringUtils.isNotBlank(customJsFile)) {
-                jgivenConfig.setCustomJsFile(copyFileToMaster(workspace, customJsFile));
+                jgivenConfig.setCustomJs(copyFileToMaster(workspace, customJsFile));
             }
             if (StringUtils.isNotBlank(title)) {
                 jgivenConfig.setTitle(title);
@@ -301,6 +321,11 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
                 return Messages.JgivenReport_text_name();
             }
         }
+
+        @Override
+        public AbstractReportConfig getJgivenConfig(FilePath workspace) throws IOException, InterruptedException {
+            return new PlainTextReportConfig();
+        }
     }
 
     public static class AsciiDocReportConfig extends ReportConfig {
@@ -319,6 +344,11 @@ public class JgivenReportGenerator extends Recorder implements SimpleBuildStep {
             public String getDisplayName() {
                 return Messages.JgivenReport_asciidoc_name();
             }
+        }
+
+        @Override
+        public AbstractReportConfig getJgivenConfig(FilePath workspace) throws IOException, InterruptedException {
+            return new com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig();
         }
     }
 

@@ -1,8 +1,8 @@
 package org.jenkinsci.plugins.jgiven;
 
 import com.google.common.collect.ImmutableList;
-import com.tngtech.jgiven.report.ReportGenerator;
-import com.tngtech.jgiven.report.ReportGenerator.Config;
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import org.jenkinsci.plugins.jgiven.JgivenReportGenerator.ReportConfig;
 import org.junit.Test;
 
@@ -27,9 +27,9 @@ public class JgivenReportGeneratorTest {
     public void excludeEmptyScenarios_is_set_into_the_Configuration() throws Exception {
         ReportConfig config = mock(ReportConfig.class);
         given(config.getReportDirectory()).willReturn("testDir");
-        Config jgivenConfig = mock(Config.class);
+        AbstractReportConfig jgivenConfig = mock(AbstractReportConfig.class);
         given(config.getJgivenConfig(null)).willReturn(jgivenConfig);
-        ReportGenerator reportGenerator = mock(ReportGenerator.class);
+        AbstractReportGenerator reportGenerator = mock(AbstractReportGenerator.class);
 
         JgivenReportGenerator jgivenReportGenerator = new JgivenReportGenerator(ImmutableList.of(config));
         jgivenReportGenerator.setExcludeEmptyScenarios(true);
